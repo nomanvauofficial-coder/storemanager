@@ -1,141 +1,126 @@
-# 🚀 Welcome to Z.ai Code Scaffold
+# Store Manager - Simple Store Management System
 
-A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with [Z.ai](https://chat.z.ai)'s AI-powered coding assistance.
+A comprehensive convenience store management system for tracking sales, customer dues, inventory, and business expenses with detailed visual reports.
 
-## ✨ Technology Stack
+## Features
 
-This scaffold provides a robust foundation built with:
+- **Dashboard**: Quick stats, recent transactions, quick actions
+- **Product Management**: Add, edit, delete products with inventory tracking
+- **Customer Management**: Customer profiles with due balance tracking
+- **Sales Module**: Create sales with cash or due payment options
+- **Expenses Tracking**: Track business expenses by category
+- **Visual Reports**: Daily, weekly, monthly, yearly charts
 
-### 🎯 Core Framework
-- **⚡ Next.js 16** - The React framework for production with App Router
-- **📘 TypeScript 5** - Type-safe JavaScript for better developer experience
-- **🎨 Tailwind CSS 4** - Utility-first CSS framework for rapid UI development
+## Tech Stack
 
-### 🧩 UI Components & Styling
-- **🧩 shadcn/ui** - High-quality, accessible components built on Radix UI
-- **🎯 Lucide React** - Beautiful & consistent icon library
-- **🌈 Framer Motion** - Production-ready motion library for React
-- **🎨 Next Themes** - Perfect dark mode in 2 lines of code
+- Next.js 15 with App Router
+- React 19 + TypeScript
+- Tailwind CSS + shadcn/ui
+- Recharts for visualizations
+- Zustand for state management
+- localStorage for data persistence
 
-### 📋 Forms & Validation
-- **🎣 React Hook Form** - Performant forms with easy validation
-- **✅ Zod** - TypeScript-first schema validation
+## Deployment Instructions
 
-### 🔄 State Management & Data Fetching
-- **🐻 Zustand** - Simple, scalable state management
-- **🔄 TanStack Query** - Powerful data synchronization for React
-- **🌐 Fetch** - Promise-based HTTP request
+### Option 1: Deploy to Vercel (Recommended)
 
-### 🗄️ Database & Backend
-- **🗄️ Prisma** - Next-generation TypeScript ORM
-- **🔐 NextAuth.js** - Complete open-source authentication solution
+#### Step 1: Push to GitHub
 
-### 🎨 Advanced UI Features
-- **📊 TanStack Table** - Headless UI for building tables and datagrids
-- **🖱️ DND Kit** - Modern drag and drop toolkit for React
-- **📊 Recharts** - Redefined chart library built with React and D3
-- **🖼️ Sharp** - High performance image processing
+1. Create a new repository on GitHub
+2. Push your code:
 
-### 🌍 Internationalization & Utilities
-- **🌍 Next Intl** - Internationalization library for Next.js
-- **📅 Date-fns** - Modern JavaScript date utility library
-- **🪝 ReactUse** - Collection of essential React hooks for modern development
+```bash
+# Initialize git if not already
+git init
 
-## 🎯 Why This Scaffold?
+# Add all files
+git add .
 
-- **🏎️ Fast Development** - Pre-configured tooling and best practices
-- **🎨 Beautiful UI** - Complete shadcn/ui component library with advanced interactions
-- **🔒 Type Safety** - Full TypeScript configuration with Zod validation
-- **📱 Responsive** - Mobile-first design principles with smooth animations
-- **🗄️ Database Ready** - Prisma ORM configured for rapid backend development
-- **🔐 Auth Included** - NextAuth.js for secure authentication flows
-- **📊 Data Visualization** - Charts, tables, and drag-and-drop functionality
-- **🌍 i18n Ready** - Multi-language support with Next Intl
-- **🚀 Production Ready** - Optimized build and deployment settings
-- **🤖 AI-Friendly** - Structured codebase perfect for AI assistance
+# Commit
+git commit -m "Initial commit - Store Manager"
 
-## 🚀 Quick Start
+# Add your GitHub repository as remote
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+
+# Push to GitHub
+git push -u origin main
+```
+
+#### Step 2: Deploy on Vercel
+
+1. Go to [vercel.com](https://vercel.com)
+2. Sign up/Login with your GitHub account
+3. Click "Add New..." → "Project"
+4. Import your GitHub repository
+5. Vercel will auto-detect Next.js settings
+6. Click "Deploy"
+7. Wait for deployment to complete
+8. Your app will be live at `https://your-project.vercel.app`
+
+---
+
+### Option 2: Deploy to GitHub Pages (Static Export)
+
+For GitHub Pages, you need to modify `next.config.ts`:
+
+```typescript
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  reactStrictMode: false,
+};
+
+export default nextConfig;
+```
+
+Then:
+
+1. Run `npm run build` - this creates an `out` folder
+2. Push the `out` folder contents to your `gh-pages` branch
+3. Enable GitHub Pages in repository settings
+
+---
+
+### Option 3: Deploy to Netlify
+
+1. Go to [netlify.com](https://netlify.com)
+2. Sign up/Login with your GitHub account
+3. Click "Add new site" → "Import an existing project"
+4. Connect your GitHub repository
+5. Build settings:
+   - Build command: `npm run build`
+   - Publish directory: `.next`
+6. Click "Deploy site"
+
+---
+
+## Local Development
 
 ```bash
 # Install dependencies
 bun install
 
-# Start development server
+# Run development server
 bun run dev
 
 # Build for production
 bun run build
 
 # Start production server
-bun start
+bun run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your application running.
+## Data Storage
 
-## 🤖 Powered by Z.ai
+All data is stored in the browser's localStorage. Data persists across browser sessions but is local to each device/browser.
 
-This scaffold is optimized for use with [Z.ai](https://chat.z.ai) - your AI assistant for:
+## License
 
-- **💻 Code Generation** - Generate components, pages, and features instantly
-- **🎨 UI Development** - Create beautiful interfaces with AI assistance  
-- **🔧 Bug Fixing** - Identify and resolve issues with intelligent suggestions
-- **📝 Documentation** - Auto-generate comprehensive documentation
-- **🚀 Optimization** - Performance improvements and best practices
-
-Ready to build something amazing? Start chatting with Z.ai at [chat.z.ai](https://chat.z.ai) and experience the future of AI-powered development!
-
-## 📁 Project Structure
-
-```
-src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable React components
-│   └── ui/             # shadcn/ui components
-├── hooks/              # Custom React hooks
-└── lib/                # Utility functions and configurations
-```
-
-## 🎨 Available Features & Components
-
-This scaffold includes a comprehensive set of modern web development tools:
-
-### 🧩 UI Components (shadcn/ui)
-- **Layout**: Card, Separator, Aspect Ratio, Resizable Panels
-- **Forms**: Input, Textarea, Select, Checkbox, Radio Group, Switch
-- **Feedback**: Alert, Toast (Sonner), Progress, Skeleton
-- **Navigation**: Breadcrumb, Menubar, Navigation Menu, Pagination
-- **Overlay**: Dialog, Sheet, Popover, Tooltip, Hover Card
-- **Data Display**: Badge, Avatar, Calendar
-
-### 📊 Advanced Data Features
-- **Tables**: Powerful data tables with sorting, filtering, pagination (TanStack Table)
-- **Charts**: Beautiful visualizations with Recharts
-- **Forms**: Type-safe forms with React Hook Form + Zod validation
-
-### 🎨 Interactive Features
-- **Animations**: Smooth micro-interactions with Framer Motion
-- **Drag & Drop**: Modern drag-and-drop functionality with DND Kit
-- **Theme Switching**: Built-in dark/light mode support
-
-### 🔐 Backend Integration
-- **Authentication**: Ready-to-use auth flows with NextAuth.js
-- **Database**: Type-safe database operations with Prisma
-- **API Client**: HTTP requests with Fetch + TanStack Query
-- **State Management**: Simple and scalable with Zustand
-
-### 🌍 Production Features
-- **Internationalization**: Multi-language support with Next Intl
-- **Image Optimization**: Automatic image processing with Sharp
-- **Type Safety**: End-to-end TypeScript with Zod validation
-- **Essential Hooks**: 100+ useful React hooks with ReactUse for common patterns
-
-## 🤝 Get Started with Z.ai
-
-1. **Clone this scaffold** to jumpstart your project
-2. **Visit [chat.z.ai](https://chat.z.ai)** to access your AI coding assistant
-3. **Start building** with intelligent code generation and assistance
-4. **Deploy with confidence** using the production-ready setup
-
----
-
-Built with ❤️ for the developer community. Supercharged by [Z.ai](https://chat.z.ai) 🚀
+MIT License
