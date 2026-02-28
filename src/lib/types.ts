@@ -2,9 +2,11 @@
 export interface Product {
   id: string;
   name: string;
-  price: number;
-  stock: number;
+  price: number; // Price per unit (per item or per kg)
+  stock: number; // Stock in units or kg
   category: string;
+  pricingType: 'fixed' | 'weight'; // Fixed price or weight-based
+  unit: string; // e.g., 'pcs', 'kg', 'gram'
   createdAt: string;
   updatedAt: string;
 }
@@ -22,9 +24,12 @@ export interface Customer {
 export interface SaleItem {
   productId: string;
   productName: string;
-  quantity: number;
-  price: number;
+  quantity: number; // For fixed: number of items, For weight: number of kg
+  weight?: number; // Weight in kg (for weight-based products)
+  price: number; // Price per unit
   subtotal: number;
+  pricingType: 'fixed' | 'weight';
+  unit: string;
 }
 
 // Sale type

@@ -1,13 +1,12 @@
 import { create } from 'zustand';
-import { Product, Customer, Sale, DuePayment, Expense } from './types';
+import { Product, Customer, Sale, DuePayment, Expense, SaleItem } from './types';
 import {
   getProducts, saveProducts,
   getCustomers, saveCustomers,
   getSales, saveSales,
   getDuePayments, saveDuePayments,
   getExpenses, saveExpenses,
-  generateId,
-  getCustomerDueBalance
+  generateId
 } from './storage';
 
 interface StoreState {
@@ -16,6 +15,7 @@ interface StoreState {
   sales: Sale[];
   duePayments: DuePayment[];
   expenses: Expense[];
+  _loaded: boolean;
   
   // Actions
   loadData: () => void;
@@ -29,7 +29,6 @@ interface StoreState {
   addCustomer: (customer: Omit<Customer, 'id' | 'createdAt'>) => void;
   updateCustomer: (id: string, customer: Partial<Customer>) => void;
   deleteCustomer: (id: string) => void;
-  getCustomerDue: (customerId: string) => number;
   
   // Sale actions
   addSale: (sale: Omit<Sale, 'id' | 'createdAt'>) => void;
@@ -49,15 +48,19 @@ export const useStore = create<StoreState>((set, get) => ({
   sales: [],
   duePayments: [],
   expenses: [],
+  _loaded: false,
   
   loadData: () => {
+    // Only load once
+    if ((get() as any)._loaded) return;
     set({
       products: getProducts(),
       customers: getCustomers(),
       sales: getSales(),
       duePayments: getDuePayments(),
       expenses: getExpenses(),
-    });
+      _loaded: true,
+    } as any);
   },
   
   // Product actions
@@ -114,10 +117,6 @@ export const useStore = create<StoreState>((set, get) => ({
     set({ customers });
   },
   
-  getCustomerDue: (customerId) => {
-    return getCustomerDueBalance(customerId);
-  },
-  
   // Sale actions
   addSale: (saleData) => {
     const newSale: Sale = {
@@ -126,11 +125,14 @@ export const useStore = create<StoreState>((set, get) => ({
       createdAt: new Date().toISOString(),
     };
     
-    // Update inventory
+    // Update inventory for each item
     const products = get().products.map(p => {
-      const saleItem = saleData.items.find(item => item.productId === p.id);
+      const saleItem = saleData.items.find((item: SaleItem) => item.productId === p.id);
       if (saleItem) {
-        return { ...p, stock: p.stock - saleItem.quantity, updatedAt: new Date().toISOString() };
+        const deductAmount = p.pricingType === 'weight' 
+          ? (saleItem.weight || saleItem.quantity) 
+          : saleItem.quantity;
+        return { ...p, stock: Math.max(0, p.stock - deductAmount), updatedAt: new Date().toISOString() };
       }
       return p;
     });
@@ -149,7 +151,10 @@ export const useStore = create<StoreState>((set, get) => ({
     const products = get().products.map(p => {
       const saleItem = sale.items.find(item => item.productId === p.id);
       if (saleItem) {
-        return { ...p, stock: p.stock + saleItem.quantity, updatedAt: new Date().toISOString() };
+        const restoreAmount = p.pricingType === 'weight' 
+          ? (saleItem.weight || saleItem.quantity) 
+          : saleItem.quantity;
+        return { ...p, stock: p.stock + restoreAmount, updatedAt: new Date().toISOString() };
       }
       return p;
     });
